@@ -15,18 +15,14 @@ class Solution:
         self.vis = set()
 
         def DFS(root):
-            if not root or root in self.vis:
-                return
+            if root in self.vis:
+                return graphMap[root]
             self.vis.add(root)
             newNode = Node(root.val)
             graphMap[root] = newNode
             for i in root.neighbors:
-                DFS(i)
+                newNode.neighbors.append(DFS(i))
+            
+            return newNode
         
-        DFS(node)
-        
-        for key, val in graphMap.items():
-            for i in key.neighbors:
-                val.neighbors.append(graphMap[i])
-        
-        return graphMap[node]
+        return DFS(node)
