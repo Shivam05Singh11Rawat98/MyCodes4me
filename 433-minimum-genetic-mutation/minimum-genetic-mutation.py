@@ -3,6 +3,10 @@ class Solution:
         q = deque([])
         q.append((startGene,0))
         seen = set(bank)
+
+        if endGene not in seen:
+            return -1
+
         while q:
             gene,step = q.popleft()
             if gene==endGene:
