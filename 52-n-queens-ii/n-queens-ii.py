@@ -3,23 +3,9 @@ class Solution:
         """
         """
         self.cnt=0
-        self.chess = [[0]*n for _ in range(n)]
-        def check(x,y):
-            for i in range(n):
-                if self.chess[i][y]==1:
-                    return False
-                if self.chess[x][i]==1:
-                    return False
-                if 0<=(x-i)<n and 0<=(y-i)<n and self.chess[x-i][y-i]==1:
-                    return False
-                if 0<=(x+i)<n and 0<=(y-i)<n and self.chess[x+i][y-i]==1:
-                    return False
-                if 0<=(x+i)<n and 0<=(y+i)<n and self.chess[x+i][y+i]==1:
-                    return False
-                if 0<=(x-i)<n and 0<=(y+i)<n and self.chess[x-i][y+i]==1:
-                    return False
-            
-            return True
+        self.col = [False]*n
+        self.diag1 = [False]*(2*n-1)
+        self.diag2 = [False]*(2*n-1)
 
 
         def bTracking(i):
@@ -28,10 +14,11 @@ class Solution:
                 return
             
             for j in range(n):
-                if check(i,j):
-                    self.chess[i][j]=1
-                    bTracking(i+1)
-                    self.chess[i][j]=0
+                if self.col[j] or self.diag1[i+j] or self.diag2[j-i+n-1]:
+                    continue
+                self.col[j] = self.diag1[i+j] = self.diag2[j-i+n-1]= True
+                bTracking(i+1)
+                self.col[j] = self.diag1[i+j] = self.diag2[j-i+n-1]=False
 
         bTracking(0)
         return self.cnt
