@@ -7,29 +7,16 @@ class Solution:
     def merge(self,list1,list2):
         l3 = ListNode(0)
         head=l3
-        l1=list1
-        l2=list2
-        while l1!=None or l2!=None:
-            if l1==None:
-                while l2!=None:
-                    l3.next = ListNode(l2.val)
-                    l2 = l2.next
-                    l3 = l3.next
-            elif l2==None:
-                while l1!=None:
-                    l3.next = ListNode(l1.val)
-                    l1 = l1.next
-                    l3 = l3.next
+        
+        while list1 and list2:
+            if list1.val<=list2.val:
+                l3.next = list1
+                list1= list1.next
             else:
-                if l1.val>l2.val:
-                    l3.next = ListNode(l2.val)
-                    l2 = l2.next
-                    l3 = l3.next
-                else:
-                    l3.next = ListNode(l1.val)
-                    l1 = l1.next
-                    l3 = l3.next
-
+                l3.next = list2
+                list2 = list2.next
+            l3 = l3.next
+        l3.next = list1 if list2==None else list2
         return head.next
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head or not head.next:
