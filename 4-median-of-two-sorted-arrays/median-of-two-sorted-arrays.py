@@ -1,32 +1,51 @@
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        """
-        m+n is even-> 2 medians, else its one
-        where these median belongs
-        """
-        m,n=len(nums1), len(nums2)
-        total = m+n
-        half = total//2
-        if m>n:
-            nums1,nums2 = nums2,nums1
-        lo=0
-        hi = len(nums1)-1
-        while True:
-            mid1 = lo+(hi-lo)//2
-            mid2 = half - mid1 - 2
+        if (len(nums2) < len(nums1)):
+            nums1, nums2 = nums2, nums1
 
-            Aleft = nums1[mid1] if mid1>=0 else float("-inf")
-            Aright = nums1[mid1+1] if mid1+1<len(nums1) else float("inf")
-            Bleft = nums2[mid2] if mid2>=0 else float("-inf")
-            Bright = nums2[mid2+1] if mid2+1<len(nums2) else float("inf")
+        l1 = len(nums1)
+        l2 = len(nums2)
 
-            if Aleft<=Bright and Bleft<=Aright:
-                if total%2==0:
-                    return (max(Aleft,Bleft) + min(Aright,Bright))/2
+        total_size = l1 + l2
+        half = total_size // 2
+
+        left = 0
+        right = l1
+
+        while (left <= right):
+            pivot1 = (left + right) // 2
+            pivot2 = half - pivot1
+
+            nums1L = nums1[pivot1 - 1] if pivot1 > 0 else float('-inf')
+            nums1R = nums1[pivot1] if pivot1 < l1 else float('inf')
+            nums2L = nums2[pivot2 - 1] if pivot2 > 0 else float('-inf')
+            nums2R = nums2[pivot2] if pivot2 < l2 else float('inf')
+
+            if (nums1L <= nums2R and nums2L <= nums1R):
+                if (total_size % 2 == 1):
+                    return min(nums1R, nums2R)
                 else:
-                    return min(Aright,Bright)
-            elif Aleft>Bright:
-                hi=mid1-1
-            else:
-                lo=mid1+1
-                
+                    return (max(nums1L, nums2L) + min(nums1R, nums2R)) / 2
+
+            elif (nums2L > nums1R):
+                #move pivot1 right
+                left = pivot1 + 1
+            elif (nums1L > nums2R):
+                #move pivot left
+                right = pivot1 - 1
+
+
+
+
+
+
+# a , b
+# [ 3, 4, 5 |]
+# [1, | 2, 6, 7, 8]
+# c , d
+
+# a < d and c < b
+
+# [ |3, 4]
+# [1, 2, 3,| 5, 6]
+    
