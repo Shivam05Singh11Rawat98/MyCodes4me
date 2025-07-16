@@ -13,7 +13,7 @@ class Solution:
                 return 0
             if (i,j) in cache:
                 return cache[(i,j)]
-            cache[(i,j)] = float("-inf")
+            cache[(i,j)] = 0
             for k in range(i,j+1):
                 cost_prev = nums[i-1]
                 cost_after = nums[j+1]
