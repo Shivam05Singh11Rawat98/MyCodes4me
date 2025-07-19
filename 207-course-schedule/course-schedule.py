@@ -1,20 +1,26 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        courseGraph = defaultdict(list)
-        incount = [0]*numCourses
-        for c,prc in prerequisites:
-            courseGraph[prc].append(c)
-            incount[c]+=1
+        course_graph = defaultdict(list)
+        req_freq = defaultdict(int)
+        for course, pre_req in prerequisites:
+            course_graph[pre_req].append(course)
+            req_freq[course]+=1
         
-        q = [i for i in range(numCourses) if incount[i]==0]
+        queue = deque()
 
-        count=0
-        while q:
-            c = q.pop(0)
-            count+=1
-            for i in courseGraph[c]:
-                incount[i]-=1
-                if incount[i]==0:
-                    q.append(i)
-        
-        return True if count==numCourses else False
+        for course in range(numCourses):
+            if req_freq[course]==0:
+                queue.append(course)
+
+        course_count=0
+        while queue:
+            pre = queue.popleft()
+            course_count+=1
+            for course in  course_graph[pre]:
+                req_freq[course]-=1
+                if req_freq[course]==0:
+                    queue.append(course)
+
+        return course_count==numCourses
+
+
