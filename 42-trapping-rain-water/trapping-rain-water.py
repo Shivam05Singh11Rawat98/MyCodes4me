@@ -2,18 +2,16 @@ class Solution:
     def trap(self, height: List[int]) -> int:
         n = len(height)
         trapped_water = 0
-        stack = []
-        for i in range(n):
-            while len(stack) and height[i]>height[stack[-1]]:
-                top = stack[-1]
-                stack.pop()
-                if len(stack)==0:
-                    break
-                # current = stack[-1]
-                distance = i - stack[-1] - 1
-                water_height = min(height[i], height[stack[-1]]) - height[top]
-                trapped_water+=distance*water_height
+        l,r=0,n-1
+        max_l,max_r=0,0
+        while l<r:
+            if height[l]<height[r]:
+                max_l=max(max_l,height[l])
+                trapped_water+=max_l-height[l]
+                l+=1
+            else:
+                max_r=max(max_r,height[r])
+                trapped_water += max_r-height[r]
+                r-=1
 
-            stack.append(i)
-        
         return trapped_water
