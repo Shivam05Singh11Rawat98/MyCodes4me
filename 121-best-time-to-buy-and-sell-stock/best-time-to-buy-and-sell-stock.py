@@ -1,16 +1,23 @@
+"""
+edge case = [3,2,1]
+case =inf[3,2,7,2,5,9]
+buy=2
+max_prof = 7
+"""
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        """
-        """
+        buy=math.inf
+        max_profit = 0
 
-        l,r = 0,1
-        max_prof=0
-        n=len(prices)
-        while r<n:
-            if prices[l]>prices[r]:
-                l=r
+        for price in prices:
+            if price<buy:
+                buy=price
             else:
-                max_prof = max(max_prof,prices[r]-prices[l])
-            r+=1
+                max_profit = max(max_profit, price-buy)
         
-        return max_prof
+        return max_profit
+
+
+
+
+
