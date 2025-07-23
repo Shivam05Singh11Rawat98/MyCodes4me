@@ -11,22 +11,25 @@ class Solution:
             return asteroids
 
         for ast in asteroids:
-            flag=1
-            while len(stack) and ast<0:
-                if stack[-1]>0 and -1*ast > stack[-1]:
-                    stack.pop()
-                elif stack[-1]>0 and -1*ast == stack[-1]:
-                    stack.pop()
-                    flag=0
-                    break
-                elif stack[-1]<0:
-                    stack.append(ast)
-                    break
-                else:
-                    break
-
-            if (ast>0 or len(stack)==0) and flag:
+            if ast>0 or len(stack)==0:
                 stack.append(ast)
+            else:
+                flag=1
+                while len(stack) and stack[-1]>0:
+                    if stack[-1]<abs(ast):
+                        stack.pop()
+                    elif stack[-1]==abs(ast):
+                        stack.pop()
+                        flag=0
+                        break
+                    else:
+                        flag=0
+                        break
+                    
+                if flag==1:
+                    stack.append(ast)
+
+            
 
         return stack
         
