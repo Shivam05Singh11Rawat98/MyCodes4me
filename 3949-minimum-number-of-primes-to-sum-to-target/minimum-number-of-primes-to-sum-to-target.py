@@ -1,9 +1,9 @@
 class Solution:
     def __init__(self):
         self.primes = [2]
-    def prime_list(self,m):
+    def prime_list(self,m,n):
         num=3
-        while len(self.primes)<m:
+        while len(self.primes)<m and num<=n:
             isprime = True
             for i in range(len(self.primes)): 
                 if num % self.primes[i] == 0:
@@ -18,7 +18,7 @@ class Solution:
             
 
     def minNumberOfPrimes(self, n: int, m: int) -> int:
-        self.prime_list(m)
+        self.prime_list(m,n)
         print(self.primes)
         dp={}
         def dfs(total):
