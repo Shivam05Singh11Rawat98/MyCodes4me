@@ -1,36 +1,44 @@
 class Solution:
+    def __init__(self):
+        self.primes = [2]
+    def prime_list(self,m):
+        num=3
+        while len(self.primes)<m:
+            isprime = True
+            for i in range(len(self.primes)): 
+                if num % self.primes[i] == 0:
+                    isprime = False
+                    break
+            if isprime:
+                self.primes.append(num)
+            if len(self.primes)==m:
+                return
+            
+            num+=2
+            
+
     def minNumberOfPrimes(self, n: int, m: int) -> int:
-        def generateprime(M,N):
-            primes = [2]  # Initialize an empty list to store prime numbers and add 2 as the first prime number
-            num = 3  # Start checking for prime numbers from 3
-            while len(primes) < N:  # Keep searching until we find N prime numbers
-                is_prime = True  # Assume the current number is prime until proven otherwise
-                for i in range(len(primes)):
-                    if num % primes[i] == 0:  # If the current number is divisible by any previously found prime numbers
-                        is_prime = False  # Then it is not a prime number
-                        break  # Exit the loop since we've already proven it's not prime
-                if is_prime:  # If the current number is still prime after checking all previously found prime numbers
-                    primes.append(num)
-                if len(primes)==M:
-                    break  # Add it to our list of prime numbers
-                num += 2
-            return primes
-        primes = generateprime(n,m)
-        cache = {}
-        def dp(curr_sum):
-            if curr_sum==n:
+        self.prime_list(m)
+        print(self.primes)
+        dp={}
+        def dfs(total):
+            if total==0:
                 return 0
-            if curr_sum>n:
-                return float("inf")
-            if curr_sum in cache:
-                return cache[curr_sum]
             
-            min_count = float("inf")
-            for prime in primes:
-                min_count = min(min_count, dp(curr_sum+prime)+1)
+            if total<0:
+                return math.inf
             
-            cache[curr_sum] = min_count
-            return min_count
+            if total in dp:
+                return dp[total]
+
+            temp_ans = math.inf
+            for i in range(len(self.primes)):
+                temp_ans = min(temp_ans,1+dfs(total-self.primes[i]))
+            dp[total] = temp_ans
+            return temp_ans
         
-        res = dp(0)
-        return res if res != float('inf') else -1
+        res = dfs(n)
+        return res if res!=math.inf else -1 
+            
+
+            
