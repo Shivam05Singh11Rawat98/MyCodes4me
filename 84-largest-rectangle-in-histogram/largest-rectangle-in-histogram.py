@@ -1,20 +1,15 @@
-"""
-[5,7,4,3,9,10,0,11,14,8]
-ele=
-stack =  
-max_area = 2
-"""
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
+        n = len(heights)
         stack = []
-        res=0
-        for h in heights+[-1]:
-            steps=0
-            while stack and stack[-1][1]>=h:
-                w,val = stack.pop()
-                steps+=w
-                res=max(res,val*steps)
+        largest_rect_area = 0
+        for height in heights+[-1]:
+            steps = 0
+            while len(stack) and stack[-1][0]>height:
+                ht,st = stack.pop()
+                steps+=st
+                largest_rect_area = max(largest_rect_area,ht*steps)
             
-            if h!=-1: stack.append((steps+1,h))
+            stack.append((height,steps+1))
         
-        return res
+        return largest_rect_area
