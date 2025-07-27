@@ -1,28 +1,31 @@
 class Solution:
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
         
-        flight_graph = defaultdict(list)
-        for fro,to,price in flights:
-            flight_graph[fro].append((to,price))
+        flight_graph = {}
+        
+        for source, destination, price in flights:
+            if source not in flight_graph:
+                flight_graph[source]=[]
+            flight_graph[source].append((destination, price))
+        
+        prices = [float('inf')] * n
+        print(flight_graph)
+        heap = [(0,0,src)]
 
-        heap = [(0,src,0)] #price,start,stops
-        shortest = {(src,0):0}
         while heap:
-            price,start,stops = heappop(heap)
-            if start==dst:
-                return price
-            if stops>k:
+            pit,cost,city = heappop(heap)
+
+            if pit>k:
                 continue
-            for to,cost in flight_graph[start]:
+            
+            if city not in flight_graph:
+                continue
+            
+            for dest, price in flight_graph[city]:
                 new_price = price+cost
-                if new_price < shortest.get((to,stops+1),math.inf):
-                    shortest[(to,stops+1)] = new_price
-                    heappush(heap,(price+cost,to,stops+1))
-        
-        return -1
 
-
-
+                if new_price<prices[dest]:
+                    prices[dest]=new_price
+                    heappush(heap,(pit+1,new_price,dest))
             
-            
-        
+        return prices[dst] if prices[dst] != float('inf') else -1
